@@ -74,7 +74,7 @@ class ComptabiliteDaoImplTest extends ConsumerHelperTest {
     void getListEcritureComptableTest() {
         List<EcritureComptable>  ecritureComptableList = comptabiliteDao.getListEcritureComptable();
 
-        assertEquals(5, ecritureComptableList.size());
+        assertEquals(6, ecritureComptableList.size());
     }
 
     @Test
