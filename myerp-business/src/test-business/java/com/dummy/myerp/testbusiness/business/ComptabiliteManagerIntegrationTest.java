@@ -25,15 +25,16 @@ public class ComptabiliteManagerIntegrationTest {
     @BeforeEach
     public void setupBeforeEach() {
         vEcritureComptableSample = new EcritureComptable();
+        vEcritureComptableSample.setId(42);
         vEcritureComptableSample.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptableSample.setDate(Date.from(Instant.now()));
         vEcritureComptableSample.setLibelle("Libelle");
-        vEcritureComptableSample.setReference("AC-2019/00001");
+        vEcritureComptableSample.setReference("AC-2019/00003");
 
-        vEcritureComptableSample.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptableSample.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
                 null, new BigDecimal(123),
                 null));
-        vEcritureComptableSample.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptableSample.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),
                 null, null,
                 new BigDecimal(123)));
     }
@@ -47,13 +48,14 @@ public class ComptabiliteManagerIntegrationTest {
     @Test
     @Order(2)
     public void updateEcritureComptable() throws FunctionalException {
-        vEcritureComptableSample.setLibelle("Un nouveau libelle de test");
+        vEcritureComptableSample = vComptabiliteManager.getListEcritureComptable().get(1);
+        vEcritureComptableSample.setLibelle("Un nouveau libelle");
         vComptabiliteManager.updateEcritureComptable(vEcritureComptableSample);
     }
 
     @Test
     @Order(3)
     public void deleteEcritureComptableTest() {
-        vComptabiliteManager.deleteEcritureComptable(vComptabiliteManager.getListEcritureComptable().size() - 1);
+        vComptabiliteManager.deleteEcritureComptable(42);
     }
 }
