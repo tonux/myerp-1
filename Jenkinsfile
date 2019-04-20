@@ -1,17 +1,20 @@
 node {
     def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
 
-    stage('Repository') {
-        git '/Users/anthony/idea-workspace/ocrp9/src/'
-    }
+    agent any
 
-    stage('Database') {
-        sh 'cd /Users/anthony/idea-workspace/ocrp9/docker/dev'
-        sh './restart/sh'
-    }
+    stages {
+        stage('Repository') {
+            git '/Users/anthony/idea-workspace/ocrp9/src/'
+        }
 
-    stage('Build') {
-        sh "${mvnHome}/bin/mvn clean install sonar:sonar"
-        jacoco()
+        stage('Database') {
+            sh 'cd /Users/anthony/idea-workspace/ocrp9/docker/dev'
+            sh './restart/sh'
+        }
+
+        stage('Build') {
+            sh "${mvnHome}/bin/mvn clean install sonar:sonar"
+        }
     }
 }
