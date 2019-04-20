@@ -1,8 +1,6 @@
 node {
     def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
 
-    agent any
-
     stages {
         stage('Repository') {
             git '/Users/anthony/idea-workspace/ocrp9/src/'
