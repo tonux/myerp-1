@@ -13,18 +13,23 @@ import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import javax.validation.Validator;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ComptabiliteManagerImplTest {
 
-    class ComptabiliterManagerMock extends ComptabiliteManagerImpl {
+    class ComptabiliterManagerTestClass extends ComptabiliteManagerImpl {
         @Override
         protected BusinessProxy getBusinessProxy() {
             return super.getBusinessProxy();
@@ -50,8 +55,8 @@ public class ComptabiliteManagerImplTest {
 
     private ComptabiliteManagerImpl vComptabiliteManager;
 
-    private ComptabiliterManagerMock vComptabiliteManagerMock;
-    private ComptabiliterManagerMock vComptabiliteManagerSpy;
+    private ComptabiliterManagerTestClass vComptabiliteManagerMock;
+    private ComptabiliterManagerTestClass vComptabiliteManagerSpy;
 
     private ComptabiliteDaoImpl vComptabiliteDaoMock;
     private ComptabiliteDaoImpl vComptabiliteDaoSpy;
@@ -61,7 +66,7 @@ public class ComptabiliteManagerImplTest {
 
     @BeforeEach
     public void setUpBeforeEach() {
-        vComptabiliteManagerMock = mock(ComptabiliterManagerMock.class);
+        vComptabiliteManagerMock = mock(ComptabiliterManagerTestClass.class);
         vComptabiliteManagerSpy = spy(vComptabiliteManagerMock);
 
         vComptabiliteDaoMock = mock(ComptabiliteDaoImpl.class);
@@ -73,6 +78,7 @@ public class ComptabiliteManagerImplTest {
         vComptabiliteManager = new ComptabiliteManagerImpl();
 
         vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setId(1);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
@@ -80,7 +86,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void checkEcritureComptableUnit() throws Exception {
+    public void checkEcritureComptable() throws NotFoundException {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
@@ -88,39 +94,34 @@ public class ComptabiliteManagerImplTest {
                 null, null,
                 new BigDecimal(123)));
 
-        vComptabiliteManager.checkEcritureComptableUnit(vEcritureComptable);
+        doReturn(vDaoProxyMock).when(vComptabiliteManagerSpy).getDaoProxy();
+        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
+        doReturn(null).when(vComptabiliteDaoSpy).getEcritureComptableByRef(anyString());
+
+        assertDoesNotThrow(() -> vComptabiliteManagerSpy.checkEcritureComptable(vEcritureComptable));
     }
 
     @Test
-    public void checkEcritureComptableContext() throws NotFoundException {
-        assertDoesNotThrow(() -> vComptabiliteManagerSpy.checkEcritureComptableContext(vEcritureComptable));
-    }
-
-    @Test
-    public void checkEcritureComptableContextWithExistingRefWithoutId() throws FunctionalException, NotFoundException {
+    public void checkEcritureComptableWithExistingRefWithoutId() throws FunctionalException, NotFoundException {
         EcritureComptable vEcritureComptableSample = new EcritureComptable();
         vEcritureComptableSample.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptableSample.setDate(new Date());
         vEcritureComptableSample.setLibelle("Libelle");
         vEcritureComptableSample.setReference("AC-2019/00001");
 
-        assertThrows(FunctionalException.class, () ->  {
-            vComptabiliteManager.checkEcritureComptableContext(vEcritureComptableSample);
-        });
+        assertThrows(FunctionalException.class, () -> vComptabiliteManager.checkEcritureComptable(vEcritureComptableSample));
     }
 
     @Test
-    public void checkEcritureComptableContextWithExistingRef() throws FunctionalException, NotFoundException {
-        vEcritureComptable.setId(1);
+    public void checkEcritureComptableContextWithoutSameId() throws FunctionalException, NotFoundException {
         EcritureComptable vEcritureComptableSample = new EcritureComptable();
-        vEcritureComptableSample.setId(1);
+        vEcritureComptableSample.setId(2);
         vEcritureComptableSample.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptableSample.setDate(new Date());
         vEcritureComptableSample.setLibelle("Libelle");
         vEcritureComptableSample.setReference("AC-2019/00001");
 
-
-        assertThrows(FunctionalException.class, () -> vComptabiliteManager.checkEcritureComptableContext(vEcritureComptableSample));
+        assertThrows(FunctionalException.class, () -> vComptabiliteManager.checkEcritureComptable(vEcritureComptableSample));
     }
 
     @Test
@@ -165,7 +166,7 @@ public class ComptabiliteManagerImplTest {
     public void checkEcritureComptableUnitRG5WithWrongYear() throws Exception {
         vEcritureComptable.setReference("AAC-2018/00001");
 
-        vComptabiliteManagerMock.addReference(vEcritureComptable);
+        vComptabiliteManager.addReference(vEcritureComptable);
 
         assertThrows(FunctionalException.class, () -> vComptabiliteManager.checkEcritureComptableUnit(vEcritureComptable));
     }
@@ -174,7 +175,7 @@ public class ComptabiliteManagerImplTest {
     public void checkEcritureComptableUnitRG5WithWrongCode() throws Exception {
         vEcritureComptable.setReference("AAC-2019/00001");
 
-        vComptabiliteManagerMock.addReference(vEcritureComptable);
+        vComptabiliteManager.addReference(vEcritureComptable);
 
         assertThrows(FunctionalException.class, () -> vComptabiliteManager.checkEcritureComptableUnit(vEcritureComptable));
     }
@@ -199,72 +200,4 @@ public class ComptabiliteManagerImplTest {
 
         assertEquals("AC-2019/00001", vNewEcritureComptable.getReference());
     }
-
-//    @Test
-//    public void insertEcritureComptableTest() throws FunctionalException {
-//        DefaultTransactionStatus vTransactionStatus = mock(DefaultTransactionStatus.class);
-//        TransactionManager vTransactionManagerMock = mock(TransactionManager.class);
-//
-//        doReturn(vTransactionManagerMock).when(vComptabiliteManagerMock).getTransactionManager();
-//
-//        doReturn(vDaoProxySpy).when(vComptabiliteManagerSpy).getDaoProxy();
-//
-//        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
-//
-//        doNothing().when(vTransactionManagerMock).commitMyERP(vTransactionStatus);
-//
-//        doNothing().when(vComptabiliteManagerSpy).checkEcritureComptableContext(any(EcritureComptable.class));
-//        doNothing().when(vComptabiliteDaoSpy).insertEcritureComptable(any(EcritureComptable.class));
-//        doNothing().when(vComptabiliteManagerSpy).insertEcritureComptable(any(EcritureComptable.class));
-//
-//        vComptabiliteManagerSpy.insertEcritureComptable(vEcritureComptable);
-//
-//        verify(vComptabiliteManagerSpy).insertEcritureComptable(any(EcritureComptable.class));
-//    }
-
-//    @Test
-//    public void updateEcritureComptableTest() throws FunctionalException {
-//        DefaultTransactionStatus vTransactionStatus = mock(DefaultTransactionStatus.class);
-//        TransactionManager vTransactionManagerMock = mock(TransactionManager.class);
-//
-//        doReturn(vTransactionManagerMock).when(vComptabiliteManagerMock).getTransactionManager();
-//
-//        when(vTransactionManagerMock.beginTransactionMyERP()).thenReturn(vTransactionStatus);
-//
-//        doReturn(vDaoProxySpy).when(vComptabiliteManagerSpy).getDaoProxy();
-//
-//        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
-//
-//        doNothing().when(vTransactionManagerMock).commitMyERP(vTransactionStatus);
-//
-//        doNothing().when(vComptabiliteDaoSpy).updateEcritureComptable(any(EcritureComptable.class));
-//        doNothing().when(vComptabiliteManagerSpy).updateEcritureComptable(any(EcritureComptable.class));
-//
-//        vComptabiliteManagerSpy.updateEcritureComptable(vEcritureComptable);
-//
-//        verify(vComptabiliteManagerSpy).updateEcritureComptable(any(EcritureComptable.class));
-//    }
-
-//    @Test
-//    public void deleteEcritureComptableTest() throws FunctionalException {
-//        DefaultTransactionStatus vTransactionStatus = mock(DefaultTransactionStatus.class);
-//        TransactionManager vTransactionManagerMock = mock(TransactionManager.class);
-//
-//        doReturn(vTransactionManagerMock).when(vComptabiliteManagerMock).getTransactionManager();
-//
-//        when(vTransactionManagerMock.beginTransactionMyERP()).thenReturn(vTransactionStatus);
-//
-//        doReturn(vDaoProxySpy).when(vComptabiliteManagerSpy).getDaoProxy();
-//
-//        doReturn(vComptabiliteDaoSpy).when(vDaoProxySpy).getComptabiliteDao();
-//
-//        doNothing().when(vTransactionManagerMock).commitMyERP(vTransactionStatus);
-//
-//        doNothing().when(vComptabiliteDaoSpy).deleteEcritureComptable(anyInt());
-//        doNothing().when(vComptabiliteManagerSpy).deleteEcritureComptable(anyInt());
-//
-//        vComptabiliteManagerSpy.deleteEcritureComptable(0);
-//
-//        verify(vComptabiliteManagerSpy).deleteEcritureComptable(anyInt());
-//    }
 }
