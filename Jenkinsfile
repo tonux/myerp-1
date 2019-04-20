@@ -14,13 +14,13 @@ pipeline {
             }
         }
 
-        stage('Database') {
-            steps {
-                sh "sudo su - jenkins ${docker} docker container stop dev_myerp.db_1"
-                sh "sudo su - jenkins ${docker} docker container rm dev_myerp.db_1"
-                sh "sudo su - jenkins ${docker} docker-compose up --build"
-            }
-        }
+        //stage('Database') {
+        //    steps {
+        //        sh "sudo su - jenkins ${docker} docker container stop dev_myerp.db_1"
+        //        sh "sudo su - jenkins ${docker} docker container rm dev_myerp.db_1"
+        //        sh "sudo su - jenkins ${docker} docker-compose up --build"
+        //    }
+        //}
 
         stage('Build') {
             steps {
