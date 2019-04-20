@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        'Docker' 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-        'Maven 3.6.0' 'maven'
+    environment {
+        docker = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+        mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
     }
 
     stages {
