@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        docker = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+        docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
         mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
     }
 
@@ -17,11 +17,11 @@ pipeline {
             agent { 
                 docker
             }
-            
+
             steps {
-                sh 'docker container stop dev_myerp.db_1'
-                sh 'docker container rm dev_myerp.db_1'
-                sh 'docker-compose up --build'
+                sh "${docker} docker container stop dev_myerp.db_1"
+                sh "${docker} docker container rm dev_myerp.db_1"
+                sh "${docker} docker-compose up --build"
             }
         }
 
