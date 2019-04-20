@@ -14,6 +14,10 @@ pipeline {
         }
 
         stage('Database') {
+            agent { 
+                docker
+            }
+            
             steps {
                 sh 'docker container stop dev_myerp.db_1'
                 sh 'docker container rm dev_myerp.db_1'
