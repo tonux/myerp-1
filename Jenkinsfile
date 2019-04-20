@@ -1,4 +1,9 @@
-node {
+pipeline {
+
+    agent {
+        any
+    }
+
     def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
 
     stage('Repository') {
