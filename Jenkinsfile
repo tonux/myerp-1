@@ -16,9 +16,7 @@ pipeline {
 
         stage('Database') {
             steps {
-                sh "/Applications/Docker.app/Contents/Resources/bin/docker container stop dev_myerp.db_1"
-                sh "/Applications/Docker.app/Contents/Resources/bin/docker container rm dev_myerp.db_1"
-                sh "/Applications/Docker.app/Contents/Resources/bin/docker-compose up --build"
+                sh 'echo $USER'
             }
         }
 
