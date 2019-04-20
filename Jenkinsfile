@@ -6,7 +6,9 @@ node {
     }
 
     stage('Database') {
-        sh '/Users/anthony/idea-workspace/ocrp9/docker/dev/restart.sh'
+        sh 'docker container stop dev_myerp.db_1'
+        sh 'docker container rm dev_myerp.db_1'
+        sh 'docker-compose up --build'
     }
 
     stage('Build') {
