@@ -16,9 +16,9 @@ pipeline {
 
         stage('Database') {
             steps {
-                sh "sudo su - jenkins /Applications/Docker.app/Contents/Resources/bin/docker container stop dev_myerp.db_1"
-                sh "sudo su - jenkins /Applications/Docker.app/Contents/Resources/bin/docker container rm dev_myerp.db_1"
-                sh "sudo su - jenkins /Applications/Docker.app/Contents/Resources/bin/docker-compose up --build"
+                sh "sudo su - jenkins ${docker} docker container stop dev_myerp.db_1"
+                sh "sudo su - jenkins ${docker} docker container rm dev_myerp.db_1"
+                sh "sudo su - jenkins ${docker} docker-compose up --build"
             }
         }
 
