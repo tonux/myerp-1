@@ -1,7 +1,10 @@
-def docker = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
 pipeline {
     agent any
+
+    tools {
+        name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+        name: 'Maven 3.6.0', type: 'maven'
+    }
 
     stages {
         stage('Repository') {
@@ -28,11 +31,11 @@ pipeline {
     post {
         always {
             jacoco( 
-                    execPattern: 'target/*.exec',
-                    classPattern: 'target/classes',
-                    sourcePattern: 'src/main/java',
-                    exclusionPattern: 'src/test*'
-                )
+                execPattern: 'target/*.exec',
+                classPattern: 'target/classes',
+                sourcePattern: 'src/main/java',
+                exclusionPattern: 'src/test*'
+            )
         }
     }
 }
