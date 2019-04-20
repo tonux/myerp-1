@@ -6,8 +6,7 @@ node {
     }
 
     stage('Database') {
-        sh 'cd /Users/anthony/idea-workspace/ocrp9/docker/dev'
-        sh './restart/sh'
+        sh '/Users/anthony/idea-workspace/ocrp9/docker/dev/restart.sh'
     }
 
     stage('Build') {
