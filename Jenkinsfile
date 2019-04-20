@@ -1,8 +1,8 @@
+def docker = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
+
 pipeline {
     agent any
-
-    def docker = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-    def mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
 
     stages {
         stage('Repository') {
