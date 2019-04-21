@@ -62,7 +62,7 @@
         <sonar.language>java</sonar.language>
         <sonar.binaries>target/classes</sonar.binaries>
         <sonar.sources>src/main/java</sonar.sources>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.reportPath>${basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
 
 
