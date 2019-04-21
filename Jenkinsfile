@@ -16,7 +16,7 @@ pipeline {
 
         stage('Database') {
             steps {        
-                sh "sudo su - jenkins docker-compose up --build"
+                sh "sudo su - jenkins ${docker} docker-compose up --build"
             }
         }
 
