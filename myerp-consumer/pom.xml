@@ -36,7 +36,13 @@
     <!-- Properties -->
     <!-- =============================================================== -->
     <properties>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <!-- Coverage properties -->
+        <!-- Sonar -->
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.junit.reportPaths>${basedir}/target/surefire-reports/</sonar.junit.reportPaths>
+        <sonar.language>java</sonar.language>
+        <sonar.binaries>target/classes</sonar.binaries>
+        <sonar.sources>src/main/java</sonar.sources>
     </properties>
 
 
