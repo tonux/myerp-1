@@ -1,7 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

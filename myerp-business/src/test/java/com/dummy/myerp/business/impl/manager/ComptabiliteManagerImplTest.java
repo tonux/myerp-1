@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
 import com.dummy.myerp.business.impl.TransactionManager;
+import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.consumer.dao.impl.DaoProxyImpl;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
@@ -29,6 +30,10 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class ComptabiliteManagerImplTest {
 
+    public ComptabiliteManagerImplTest() {
+        super();
+    }
+
     class ComptabiliterManagerTestClass extends ComptabiliteManagerImpl {
         @Override
         protected BusinessProxy getBusinessProxy() {
@@ -53,7 +58,7 @@ public class ComptabiliteManagerImplTest {
 
     private EcritureComptable vEcritureComptable;
 
-    private ComptabiliteManagerImpl vComptabiliteManager;
+    private ComptabiliteManagerImpl vComptabiliteManager = new ComptabiliteManagerImpl();
 
     private ComptabiliterManagerTestClass vComptabiliteManagerMock;
     private ComptabiliterManagerTestClass vComptabiliteManagerSpy;
@@ -74,8 +79,6 @@ public class ComptabiliteManagerImplTest {
 
         vDaoProxyMock = mock(DaoProxyImpl.class);
         vDaoProxySpy = spy(vDaoProxyMock);
-
-        vComptabiliteManager = new ComptabiliteManagerImpl();
 
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(1);
