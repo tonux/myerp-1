@@ -9,6 +9,9 @@ pipeline {
         }
 
         stage('Database') {
+            agent {
+                docker  { image '18.06.3-ce' }
+            }
             steps {        
                 sh "docker-compose up --build"
             }
@@ -25,6 +28,9 @@ pipeline {
     }
 
     post {
+        agent {
+            docker  { image '18.06.3-ce' }
+        }
         always {
             sh "docker container stop dev_myerp.db_1"
             sh "docker container rm dev_myerp.db_1"
