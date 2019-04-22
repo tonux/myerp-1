@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-        mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
-        sonar = tool name: 'Sonarqube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-    }
-
     stages {
         stage('Repository') {
             steps {
@@ -32,12 +26,6 @@ pipeline {
 
     post {
         always {
-            jacoco( 
-                execPattern: 'target/*.exec',
-                classPattern: 'target/classes',
-                sourcePattern: 'src/main/java',
-                exclusionPattern: 'src/test*'
-            )
             sh "sudo su - jenkins ${docker} docker container stop dev_myerp.db_1"
             sh "sudo su - jenkins ${docker} docker container rm dev_myerp.db_1"
         }
