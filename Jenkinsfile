@@ -4,6 +4,7 @@ pipeline {
     environment {
         docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool', type: 'docker'
         mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
+        sonar = tool name: 'Sonarqube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
     }
 
     stages {
@@ -15,7 +16,7 @@ pipeline {
 
         stage('Database') {
             steps {        
-                sh "docker-compose up --build"
+                sh "sudo su - jenkins ${docker} docker-compose up --build"
             }
         }
 
@@ -34,8 +35,8 @@ pipeline {
                 sourcePattern: 'src/main/java',
                 exclusionPattern: 'src/test*'
             )
-            sh "docker container stop dev_myerp.db_1"
-            sh "docker container rm dev_myerp.db_1"
+            sh "sudo su - jenkins ${docker} docker container stop dev_myerp.db_1"
+            sh "sudo su - jenkins ${docker} docker container rm dev_myerp.db_1"
         }
     }
 }
