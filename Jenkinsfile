@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+        docker = tool name: 'docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool', type: 'docker'
         mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
-        sonar = tool name: 'Sonarqube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
     }
 
     stages {
