@@ -13,11 +13,6 @@ pipeline {
             }
         }
 
-        stage('Database') {
-            steps {        
-            }
-        }
-
         stage('Build') {
             steps {
                 sh "${mvnHome}/bin/mvn clean install -P test-consumer,test-business sonar:sonar -Dsonar.projectKey=myerp -Dsonar.host.url=http://localhost:9000/sonarqube -Dsonar.login=b5d60e74d8b4f80b21e4dbba5809edc5a5ec824d"
