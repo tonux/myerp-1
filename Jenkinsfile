@@ -21,7 +21,7 @@ pipeline {
 
         stage('Git Push') {
             steps {
-                git 'push'
+                git 'push origin master'
             }
         }
     }
