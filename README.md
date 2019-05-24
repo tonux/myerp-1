@@ -17,7 +17,8 @@ Il comporte :
 
 *   une base de données _PostgreSQL_ contenant un jeu de données de démo (`postgresql://127.0.0.1:9032/db_myerp`)
 
-### Déploiement Docker
+ 
+## Déploiement Docker
 
 #### Lancement
 
@@ -42,23 +43,19 @@ de la base de données et de le recréer avec le jeu de données de base.
 
     Important : Cette manipulation est à effectuer à chaque lancement de build Jenkins.
 
-## Déploiement du projet
+## Intégration continue avec Jenkins
+L'intégration continue du projet se fait via Jenkins. Un fichier `Jenkinsfile` permet de configurer 
+*pipeline*. Ce pipeline va :
+- Récupérer les sources depuis le repository
+- Lancer une commande `mvn clean install` avec les profils de tests **consumer-test** et **business-test**
 
+### Installation du pipeline Jenkins
+L'instance de Jenkins installée doit être configurée avec JDK 8, Sonarqube et Maven 3.
 
-## Correctifs
-- EcritureComptable, isEquilibree() : Erreur lors de la comparaison des données causée par les décimales. Ajout de la méthode stripTrailingZeros() pour suprimer les décimales inutiles. 
-- SqlContext.xml, SQLinsertListLigneEcritureComptable : Ajout d'une virgule dans la requête SQL
-- Création du fichier de configuration `bootstrapContext.xml` dans le module **Business**
-- EcritureComptable, getTotalCredit() : Erreur provoquée par l'appel de la méthode getDebit() au lieu de getCredit()
-- EcritureComptable : Modification de l'expression régulière
+Une fois le pipeline créé, il suffit d'y configurer le lien vers le repository et 
+de spécifier que la configuration du pipeline se fera avec unfichier *Jenkinsfile*.
 
-
-## Evolutions
-- Implémentation de la méthode `addReference()` dans `ComptabiliteManagerImpl.class`
-- Implémentation de la règle de gestion RG-Compta5 dans la méthode `CheckEcritureComptableUnit()`
-- Ajout d'une base de données de test via le fichier `consumerContext.xml` dans le module **Consumer**
-
-## Intégration continue via Jenkins
+### Contenu du script Jenkinsfile 
 Un fichier `Jenkinsfile` permet d'automatiser les tests et leur agrégation :
 
 Au lancement de build : 
@@ -66,3 +63,11 @@ Au lancement de build :
 2. Une commande est lancée pour effectuer les tests avec les profils *consumer-test* et *business-test*
 
 Le fichier `restart.sh` permet de relancer la base de données pour effectuer un build (voir **Déploiement du projet**)
+
+### Agrégation des données de tests
+Les données liées aux tests sont automatiquement intégrées, via la commande maven lancée depuis Jenkins, 
+à **Sonarqube**.
+
+## Correctifs et évolutions
+
+*Se référer au fichier ``CHANGELOG.md``* 
