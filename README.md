@@ -69,5 +69,4 @@ Les données liées aux tests sont automatiquement intégrées, via la commande 
 à **Sonarqube**.
 
 ## Correctifs et évolutions
-
 *Se référer au fichier ``CHANGELOG.md``* 
