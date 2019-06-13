@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        mvnHome = tool name: 'Maven 3.6.0', type: 'maven'
+        mvnHome = tool name: 'Maven', type: 'maven'
     }
 
     stages {
