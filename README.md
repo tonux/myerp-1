@@ -43,27 +43,6 @@ de la base de données et de le recréer avec le jeu de données de base.
 
     Important : Cette manipulation est à effectuer à chaque lancement de build Jenkins.
 
-## Intégration continue avec Jenkins
-L'intégration continue du projet se fait via Jenkins. Un fichier `Jenkinsfile` permet de configurer 
-*pipeline*. Ce pipeline va :
-- Récupérer les sources depuis le repository
-- Lancer une commande `mvn clean install` avec les profils de tests **consumer-test** et **business-test**
-
-### Installation du pipeline Jenkins
-L'instance de Jenkins installée doit être configurée avec JDK 8, Sonarqube et Maven 3.
-
-Une fois le pipeline créé, il suffit d'y configurer le lien vers le repository et 
-de spécifier que la configuration du pipeline se fera avec unfichier *Jenkinsfile*.
-
-### Contenu du script Jenkinsfile 
-Un fichier `Jenkinsfile` permet d'automatiser les tests et leur agrégation :
-
-Au lancement de build : 
-1. Jenkins récupère le repository local
-2. Une commande est lancée pour effectuer les tests avec les profils *consumer-test* et *business-test*
-
-Le fichier `restart.sh` permet de relancer la base de données pour effectuer un build (voir **Déploiement du projet**)
-
 ### Agrégation des données de tests
 Les données liées aux tests sont automatiquement intégrées, via la commande maven lancée depuis Jenkins, 
 à **Sonarqube**.
