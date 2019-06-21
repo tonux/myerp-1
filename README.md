@@ -38,6 +38,8 @@ Il comporte une base de données **PostgreSQL** contenant un jeu de données de 
 Le script `restart.sh` présent dans le dossier `docker/dev` permet de supprimer le container 
 de la base de données et de le recréer avec le jeu de données de base.
 
+Selon la configuration définie, il faudra mettre à jour les fichiers `db.properties` dans **Consumer** et **Business** afin que les tests puissent se connecter à la base de données.
+
     Important : Cette manipulation est à effectuer à chaque lancement de build Jenkins.
 
 ## Intégration continue
