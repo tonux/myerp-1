@@ -64,7 +64,7 @@ Créez un **Job Maven** et le configurer en tant que projet GitHub (URL, Reposit
 Les données liées aux tests sont automatiquement intégrées, via la commande maven lancée depuis Jenkins, 
 à **Sonarqube**.
 
-Dans la configuration du **Job** Jenkins, il faut ajouter la commande donnée par SonarQube (exemple : `sonar:sonar -Dsonar.projectKey=MyERP -Dsonar.host.url=http://51.77.230.10:9000 -Dsonar.login=6122654de79d360c392fcbfe6e0e06432343798a`) àdans la partie *Goals et Options* dans la section *Build*.
+Dans la configuration du **Job** Jenkins, il faut ajouter la commande donnée par SonarQube (exemple : `sonar:sonar -Dsonar.projectKey=MyERP -Dsonar.host.url=http://51.77.230.10:9000 -Dsonar.login=6122654de79d360c392fcbfe6e0e06432343798a`) dans la partie *Goals et Options* dans la section *Build*.
 
 ## Correctifs et évolutions
 *Se référer au fichier `CHANGELOG.md`* 
